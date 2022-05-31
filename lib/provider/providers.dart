@@ -38,11 +38,9 @@ final totalProvider =
   final people = ref.watch(peopleProvider).map;
   final fees = ref.watch(feesProvider).map;
   final tax = ref.watch(taxProvider).value;
-  final subtotal = people.values.fold<double>(
-          0.0, ((previousValue, element) => previousValue += element)) +
-      fees.values.fold<double>(
-          0.0, ((previousValue, element) => previousValue += element));
-  return ValueNotifier(subtotal + (subtotal * tax));
+  final peopleTotal = people.values.fold<double>(0, (a, b) => a + b);
+  final feesTotal = fees.values.fold<double>(0, (a, b) => a + b);
+  return ValueNotifier(peopleTotal + feesTotal + (peopleTotal * tax));
 });
 
 final appThemeProvider = ChangeNotifierProvider.autoDispose<AppTheme>(((ref) {
