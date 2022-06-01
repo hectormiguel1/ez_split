@@ -1,4 +1,4 @@
-import 'package:ez_split/pages/home.dart';
+import 'package:ez_split/pages/template.dart';
 import 'package:ez_split/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,6 +29,6 @@ class MyApp extends ConsumerWidget {
             primarySwatch: theme.colorTheme,
             brightness: theme.brightness,
             useMaterial3: theme.useMaterial3),
-        home: const Home());
+        home: const TemplateSelection());
   }
 }
