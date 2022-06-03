@@ -54,6 +54,7 @@ class InfoCard extends ConsumerWidget {
             ),
           ),
           DataTable(
+              columnSpacing: 15,
               columns: const [
                 DataColumn(label: Text("Name")),
                 DataColumn(label: Text("Amount \$")),
@@ -61,36 +62,36 @@ class InfoCard extends ConsumerWidget {
               ],
               rows: observableDS.map.entries
                   .map(
-                    (e) => DataRow(cells: [
-                      DataCell(
-                        Text(e.key),
-                      ),
-                      DataCell(
-                        Text(e.value.toStringAsFixed(2)),
-                      ),
-                      DataCell(Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Tooltip(
-                              message: "Edit ${e.key}",
-                              child: IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () => showDialog(
-                                      context: context,
-                                      builder: (_) => InputCard(
-                                          label: label,
-                                          provider: providerToWatch,
-                                          editKey: e.key)))),
-                          const SizedBox(width: 10),
-                          IconButton(
-                            icon: const Icon(Icons.remove, color: Colors.red),
-                            onPressed: () => observableDS.remove(e.key),
+                    (e) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text(e.key),
+                        ),
+                        DataCell(Text(e.value.toStringAsFixed(2)),
+                            showEditIcon: true,
+                            onTap: () => showDialog(
+                                context: context,
+                                builder: (_) => InputCard(
+                                      provider: providerToWatch,
+                                      label: label,
+                                      editKey: e.key,
+                                    ))),
+                        DataCell(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon:
+                                    const Icon(Icons.remove, color: Colors.red),
+                                onPressed: () => observableDS.remove(e.key),
+                              ),
+                            ],
                           ),
-                        ],
-                      ))
-                    ]),
+                        ),
+                      ],
+                    ),
                   )
                   .toList()),
           const SizedBox(

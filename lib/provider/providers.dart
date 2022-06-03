@@ -1,7 +1,9 @@
 import 'package:ez_split/model/notifer_map.dart';
+import 'package:ez_split/model/template.dart';
 import 'package:ez_split/model/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 final peopleProvider =
     ChangeNotifierProvider.autoDispose<NotifierMap<String, double>>((ref) {
@@ -47,3 +49,17 @@ final appThemeProvider = ChangeNotifierProvider.autoDispose<AppTheme>(((ref) {
   ref.maintainState = true;
   return AppTheme();
 }));
+
+final templateProvider =
+    ChangeNotifierProvider.autoDispose<ValueNotifier<Template>>((ref) {
+  ref.maintainState = true;
+  return ValueNotifier<Template>(Template.Unselected);
+});
+
+final currentRouteProvider =
+    ChangeNotifierProvider.autoDispose<ValueNotifier<String>>((ref) {
+  ref.maintainState = true;
+  return ValueNotifier<String>('/');
+});
+
+final logger = Logger(printer: PrettyPrinter(methodCount: 1, lineLength: 80));

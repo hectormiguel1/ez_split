@@ -1,5 +1,7 @@
+import 'package:ez_split/model/routes.dart';
 import 'package:ez_split/provider/providers.dart';
 import 'package:ez_split/widgets/app_bar.dart';
+import 'package:ez_split/widgets/drower.dart';
 import 'package:ez_split/widgets/total_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,8 +12,13 @@ class TotalsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final total = ref.watch(totalProvider).value;
+    final theme = ref.watch(appThemeProvider);
+        ref.watch(currentRouteProvider).value = ModalRoute.of(context)!.settings.name!;
+
+    theme.updateUI(context);
     return Scaffold(
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(key: GlobalObjectKey(routeFromType[runtimeType]!)),
+        endDrawer: theme.shouldUseDrower ? const CustomDrawer() : null,
         body: Align(
           alignment: Alignment.topCenter,
           child: SingleChildScrollView(

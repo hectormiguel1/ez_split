@@ -1,4 +1,7 @@
+import 'package:ez_split/model/routes.dart';
+import 'package:ez_split/pages/home.dart';
 import 'package:ez_split/pages/template.dart';
+import 'package:ez_split/pages/totals.dart';
 import 'package:ez_split/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +18,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'EZ Split',
         theme: ThemeData(
             // This is the theme of your application.
             //
@@ -29,6 +32,6 @@ class MyApp extends ConsumerWidget {
             primarySwatch: theme.colorTheme,
             brightness: theme.brightness,
             useMaterial3: theme.useMaterial3),
-        home: const TemplateSelection());
+        routes: routes);
   }
 }

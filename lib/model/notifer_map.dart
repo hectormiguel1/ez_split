@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class NotifierMap<T1, T2> with ChangeNotifier {
   late Map<T1, T2> _observableMap;
@@ -33,4 +32,5 @@ class NotifierMap<T1, T2> with ChangeNotifier {
   }
 
   Map<String, dynamic> jsonify() => {"elements": jsonEncode(_observableMap)};
+
 }

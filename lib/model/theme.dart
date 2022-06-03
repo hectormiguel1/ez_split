@@ -4,14 +4,17 @@ class AppTheme with ChangeNotifier {
   late Brightness _brightness;
   late MaterialColor _colorTheme;
   late bool _useMaterial3;
+  late bool _shouldUseDrower;
 
   AppTheme(
       {Brightness initialBrightness = Brightness.dark,
       MaterialColor initialTheme = Colors.blue,
-      bool useMaterial3 = true}) {
+      bool useMaterial3 = true,
+      bool shouldUseDrower = false}) {
     _brightness = initialBrightness;
     _colorTheme = initialTheme;
-    _useMaterial3 = true;
+    _useMaterial3 = useMaterial3;
+    _shouldUseDrower = shouldUseDrower;
   }
 
   Brightness get brightness => _brightness;
@@ -33,4 +36,24 @@ class AppTheme with ChangeNotifier {
     _useMaterial3 = !_useMaterial3;
     notifyListeners();
   }
+
+  bool get shouldUseDrower => _shouldUseDrower;
+
+  set shouldUseDrower(bool val) {
+    _shouldUseDrower = val;
+    notifyListeners();
+  }
+
+  void updateUI(BuildContext context) {
+        final width = MediaQuery.of(context).size.width;
+    if (width <= 400) {
+      shouldUseDrower = true;
+    }
+    else {
+      shouldUseDrower = false;
+    }
+    notifyListeners();
+  }
+
+
 }

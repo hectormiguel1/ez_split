@@ -30,6 +30,7 @@ class TotalCard extends ConsumerWidget {
             ),
           ),
           DataTable(
+            columnSpacing: 15,
               columns: const [
                 DataColumn(label: Text("Name")),
                 DataColumn(label: Text("Amount \$")),

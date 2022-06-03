@@ -1,53 +1,16 @@
 import 'package:ez_split/model/notifer_map.dart';
-import 'package:ez_split/pages/home.dart';
+import 'package:ez_split/model/template.dart';
 import 'package:ez_split/provider/providers.dart';
 import 'package:ez_split/widgets/app_bar.dart';
 import 'package:ez_split/widgets/custom_card.dart';
+import 'package:ez_split/widgets/drower.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-enum Templates {
-  UberEats("UberEats", ["Delivery", "Service", "Fuel Upchage", "Tip"],
-      FaIcon(FontAwesomeIcons.uber)),
-  DoorDash("DoorDash", ["Delivery", "Service", "Fuel Upcharge", "Tip"],
-      FaIcon(FontAwesomeIcons.dashcube)),
-  GrubHub(
-      "GrubHub", ["Delivery", "Service", "Tip"], FaIcon(FontAwesomeIcons.car)),
-  Restaurant("Restaurant", ["Tip"], Icon(Icons.restaurant)),
-  Custom("Custom", [], FaIcon(FontAwesomeIcons.penToSquare));
-
-  final String name;
-  final List<String> fees;
-  final Widget icon;
-
-  const Templates(this.name, this.fees, this.icon);
-
-  factory Templates.fromString(String name) {
-    switch (name) {
-      case "UberEats":
-        return UberEats;
-      case "DoorDash":
-        return DoorDash;
-      case "GrubHub":
-        return GrubHub;
-      case "Restaurant":
-        return Restaurant;
-      case "Custom":
-        return Custom;
-      default:
-        return Custom;
-    }
-  }
-
-  @override
-  String toString() => name;
-}
 
 class TemplateSelection extends ConsumerWidget {
   const TemplateSelection({Key? key}) : super(key: key);
 
-  void selectedTemplate(NotifierMap fees, Templates selection) {
+  void selectedTemplate(NotifierMap fees, Template selection) {
     fees.clear();
     for (var fee in selection.fees) {
       fees.addElement(fee, 0.0);
@@ -56,8 +19,13 @@ class TemplateSelection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(appThemeProvider);
+    final templateNotifier = ref.watch(templateProvider);
+    ref.watch(currentRouteProvider).value = ModalRoute.of(context)!.settings.name!;
+    templateNotifier.value = Template.Unselected;
     return Scaffold(
         appBar: CustomAppBar(),
+        endDrawer: theme.shouldUseDrower ? const CustomDrawer() : null,
         body: Align(
             alignment: Alignment.topCenter,
             child: CustomCard(
@@ -76,32 +44,29 @@ class TemplateSelection extends ConsumerWidget {
                     ),
                   ),
                 ),
-                ...Templates.values
-                    .map((template) => ConstrainedBox(
-                          constraints: const BoxConstraints(
-                              maxWidth: 500, minWidth: 300),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Tooltip(
-                              message: "Select ${template.name}",
-                              child: ListTile(
+                for (Template template in Template.values)
+                  if (template != Template.Unselected)
+                    ConstrainedBox(
+                      constraints:
+                          const BoxConstraints(maxWidth: 500, minWidth: 200),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: Tooltip(
+                            message: "Select ${template.name}",
+                            child: ListTile(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 leading: template.icon,
                                 title: Text(template.name),
-                                trailing: const Icon(Icons.arrow_right),
                                 onTap: () {
                                   selectedTemplate(
                                       ref.watch(feesProvider), template);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => const DataEntryScreen()));
-                                },
-                              ),
-                            ),
-                          ),
-                        ))
-                    .toList()
+                                  templateNotifier.value = template;
+                                  Navigator.of(context).pushNamed('data');
+                                })),
+                      ),
+                    )
               ],
             ))));
   }
