@@ -16,10 +16,7 @@ class CustomDrawer extends ConsumerWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ListView(padding: EdgeInsets.zero, children: [
       const DrawerHeader(child: Align(alignment: Alignment.center, child: Text("EZ Split Settings")),),
-      ListTile(
-          title: Text("Tax: ${(tax * 100).toStringAsFixed(2)} %"),
-          onTap: () =>
-              showDialog(context: context, builder: (_) => TaxDialog())),
+      
       ListTile(
         title: const Text("Current Color Theme: "),
         trailing: Icon(Icons.circle, color: theme.colorTheme),

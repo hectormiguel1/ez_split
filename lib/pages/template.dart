@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TemplateSelection extends ConsumerWidget {
+
   const TemplateSelection({Key? key}) : super(key: key);
 
   void selectedTemplate(NotifierMap fees, Template selection) {
@@ -22,7 +23,7 @@ class TemplateSelection extends ConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final templateNotifier = ref.watch(templateProvider);
     ref.watch(currentRouteProvider).value = ModalRoute.of(context)!.settings.name!;
-    templateNotifier.value = Template.Unselected;
+    theme.updateUI(context);
     return Scaffold(
         appBar: CustomAppBar(),
         endDrawer: theme.shouldUseDrower ? const CustomDrawer() : null,

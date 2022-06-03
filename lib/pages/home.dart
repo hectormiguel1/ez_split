@@ -15,7 +15,7 @@ class DataEntryScreen extends ConsumerWidget {
     ref.watch(currentRouteProvider).value = ModalRoute.of(context)!.settings.name!;
     theme.updateUI(context);
     return Scaffold(
-      appBar: CustomAppBar(key: GlobalKey()),
+      appBar: CustomAppBar(subtitle: ref.watch(templateProvider).value.name,),
       endDrawer: theme.shouldUseDrower ? const CustomDrawer() : null,
       body: Align(
         alignment: Alignment.topCenter,

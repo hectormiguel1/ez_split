@@ -46,7 +46,7 @@ class AppTheme with ChangeNotifier {
 
   void updateUI(BuildContext context) {
         final width = MediaQuery.of(context).size.width;
-    if (width <= 400) {
+    if (width <= 500) {
       shouldUseDrower = true;
     }
     else {

@@ -1,5 +1,4 @@
 import 'package:ez_split/model/routes.dart';
-import 'package:ez_split/model/template.dart';
 import 'package:ez_split/pages/template.dart';
 import 'package:ez_split/provider/providers.dart';
 import 'package:ez_split/widgets/color_picker.dart';
@@ -8,23 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomAppBar extends ConsumerWidget with PreferredSizeWidget {
-  CustomAppBar({Key? key}) : super(key: key);
+  final String? subtitle;
+  CustomAppBar({Key? key, this.subtitle}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
     final tax = ref.watch(taxProvider);
-    final template = ref.watch(templateProvider);
     final currentRoute = ref.watch(currentRouteProvider);
-    if(currentRoute.value == '/') {
-      logger.i(currentRoute.value);
-    }
+    theme.updateUI(context);
     return AppBar(
-      leading: currentRoute.value != '/'?
-           IconButton(
+      leading: currentRoute.value != routeFromType[TemplateSelection]
+          ? IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                
                 Navigator.of(context).pop();
               },
             )
@@ -35,21 +31,33 @@ class CustomAppBar extends ConsumerWidget with PreferredSizeWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("EZ-Split"),
-          template.value != Template.Unselected
-              ? Text(template.value.toString(),
+          subtitle != null
+              ? Text(
+                  subtitle!,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w100, fontSize: 12),)
+                      fontWeight: FontWeight.w300, fontSize: 14),
+                )
               : Container()
         ],
       ),
       centerTitle: false,
       actions: [
-        if (theme.shouldUseDrower)
+        if (theme.shouldUseDrower) ...[
+          Tooltip(
+            message: "Current Tax Rate, Click to Change",
+            child: TextButton(
+              child: Text("Tax: ${(tax.value * 100).toStringAsFixed(2)} %"),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (_) => TaxDialog(),
+              ),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () => Scaffold.of(context).openEndDrawer(),
-          )
-        else ...[
+          ),
+        ] else ...[
           Tooltip(
               message: "Current Tax Rate, Click to Change",
               child: TextButton(

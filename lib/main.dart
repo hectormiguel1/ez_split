@@ -1,7 +1,4 @@
 import 'package:ez_split/model/routes.dart';
-import 'package:ez_split/pages/home.dart';
-import 'package:ez_split/pages/template.dart';
-import 'package:ez_split/pages/totals.dart';
 import 'package:ez_split/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
